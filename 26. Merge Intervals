@@ -1,0 +1,37 @@
+#include <bits/stdc++.h> 
+/*
+
+    intervals[i][0] = start point of i'th interval
+    intervals[i][1] = finish point of i'th interval
+
+*/
+
+vector<vector<int>> mergeIntervals(vector<vector<int>> &intervals)
+{
+    // Write your code here.
+    
+    vector<pair<int,int>> intvl;
+    for(int i=0;i<intervals.size();i++){
+        intvl.push_back({intervals[i][0],intervals[i][1]});
+    }
+
+    sort(intvl.begin(),intvl.end());
+
+    vector<vector<int>> ans;
+    vector<int> temp{intvl[0].first, intvl[0].second};
+    for(int i=1;i<intervals.size();i++){
+        
+        if(temp[1]>=intvl[i].first){
+            temp[1]=max(intvl[i].second,temp[1]);
+        }else{
+            ans.push_back(temp);
+            temp[0]=intvl[i].first;
+            temp[1]=intvl[i].second;
+        }
+    }
+
+    if(ans.size() == 0 || temp[0] != ans[ans.size()-1][0])
+    ans.push_back(temp);
+
+    return ans;
+}
